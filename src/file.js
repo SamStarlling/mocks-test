@@ -1,7 +1,6 @@
 const { readFile } = require('fs/promises');
 const { join } = require('path');
 
-//Object with validations
 const DEFAULT_OPTIONS = {
   maxLines: 3,
   fields: [ 'id', 'name', 'profession', 'age' ]
