@@ -13,7 +13,6 @@ class File {
     return content;
   }
 
-  //Return content about this filePath
   static async getFileContent(filePath) {
     //Get file path
     const fileName = join(__dirname, filePath);
