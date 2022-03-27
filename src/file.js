@@ -34,22 +34,36 @@ class File {
   static async isValid(csvString, options = DEFAULT_OPTIONS) {
     const headerPattern = options.fields.join(',');
     const [header, ...fileWithoutHeader] = csvString.split('\n');
+    
     const isHeaderValid = header === headerPattern;
-
     if(!isHeaderValid) {
       return {
         error: error.FILE_FIELDS_ERROR_MESSAGE,
         valid: false
-      }
-    };
+      };
+    }
+
+    const isContentLengthAccepted = (
+      fileWithoutHeader.lenght > 0 &&
+      fileWithoutHeader.lenght <= options.maxLines 
+    );
+    if(!isContentLengthAccepted) {
+      return {
+        error: error.FILE_LENGTH_ERROR_MESSAGE,
+        valid: false
+      };
+    }
     return {
       valid: true
-    }
+    };
   }
 }
 
 //clojure (auto excute function - IFE) - call file methods
 (async () => {
-  const result = await File.csvJson('./../mocks/invalid-header.csv');
+  // const result = await File.csvJson('./../mocks/empty-file-invalid.csv');
+  // const result = await File.csvJson('./../mocks/invalid-header.csv');
+  // const result = await File.csvJson('./../mocks/three-items-invalid.csv');
+  const result = await File.csvJson('./../mocks/four-items-invalid.csv');
   console.log('result', result);
 })();
