@@ -2,7 +2,6 @@ const { readFile } = require('fs/promises');
 const { join } = require('path');
 
 const { error } = require('./constants');
-console.log(error);
 
 const DEFAULT_OPTIONS = {
   maxLines: 3,
@@ -10,11 +9,10 @@ const DEFAULT_OPTIONS = {
 };
 
 class File {
-  static async csvJson(filePath) {
+  static async csvToJson(filePath) {
     const content = await this.getFileContent(filePath);
 
     const validation = await this.isValid(content);
-    console.log(validation)
 
     if (!validation.valid) {
       throw new Error(validation.error);
@@ -24,11 +22,8 @@ class File {
   }
 
   static async getFileContent(filePath) {
-    //Get file path
-    const fileName = join(__dirname, filePath);
-
     //Convert file content to brazilian format
-    return ( await readFile(fileName)).toString('utf8');
+    return ( await readFile(filePath)).toString('utf8');
   }
 
   static async isValid(csvString, options = DEFAULT_OPTIONS) {
@@ -59,11 +54,4 @@ class File {
   }
 }
 
-//clojure (auto excute function - IFE) - call file methods
-(async () => {
-  // const result = await File.csvJson('./../mocks/empty-file-invalid.csv');
-  // const result = await File.csvJson('./../mocks/invalid-header.csv');
-  // const result = await File.csvJson('./../mocks/three-items-invalid.csv');
-  const result = await File.csvJson('./../mocks/four-items-invalid.csv');
-  console.log('result', result);
-})();
+module.exports = File;
