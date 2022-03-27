@@ -1,6 +1,9 @@
 const { readFile } = require('fs/promises');
 const { join } = require('path');
 
+const { error } = require('./constants');
+console.log(error);
+
 const DEFAULT_OPTIONS = {
   maxLines: 3,
   fields: [ 'id', 'name', 'profession', 'age' ]
@@ -8,7 +11,15 @@ const DEFAULT_OPTIONS = {
 
 class File {
   static async csvJson(filePath) {
-    const content = await File.getFileContent(filePath);
+    const content = await this.getFileContent(filePath);
+
+    const validation = await this.isValid(content);
+    console.log(validation)
+
+    if (!validation.valid) {
+      throw new Error(validation.error);
+    }
+
     return content;
   }
 
@@ -19,10 +30,26 @@ class File {
     //Convert file content to brazilian format
     return ( await readFile(fileName)).toString('utf8');
   }
+
+  static async isValid(csvString, options = DEFAULT_OPTIONS) {
+    const headerPattern = options.fields.join(',');
+    const [header, ...fileWithoutHeader] = csvString.split('\n');
+    const isHeaderValid = header === headerPattern;
+
+    if(!isHeaderValid) {
+      return {
+        error: error.FILE_FIELDS_ERROR_MESSAGE,
+        valid: false
+      }
+    };
+    return {
+      valid: true
+    }
+  }
 }
 
 //clojure (auto excute function - IFE) - call file methods
 (async () => {
-  const result = await File.csvJson('./../mocks/three-items-valid.csv');
+  const result = await File.csvJson('./../mocks/invalid-header.csv');
   console.log('result', result);
 })();
