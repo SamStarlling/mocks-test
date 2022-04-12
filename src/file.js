@@ -54,7 +54,7 @@ class File {
   static parseCSVToJson(csvString) {
     const lines = csvString.split('\n');
 
-    //Remove the first item and add to the variable
+    //Remove the first item and add it to the variable
     const firstLine = lines.shift();
     const header = firstLine.split(',');
     const users = lines.map(line => {
