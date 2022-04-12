@@ -56,15 +56,16 @@ class File {
 
     //Remove the first item and add to the variable
     const firstLine = lines.shift();
-    const header = lines.split(',');
+    const header = firstLine.split(',');
     const users = lines.map(line => {
       const columns = line.split(',');
       let user = {};
       for(const index in columns) {
-        user[header[header]] = colunms[index];
+        user[header[index]] = columns[index];
       }
       console.log(user);
     })
+    return users;
   }
 }
 
