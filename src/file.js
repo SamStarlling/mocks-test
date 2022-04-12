@@ -16,7 +16,8 @@ class File {
       throw new Error(validation.error);
     }
 
-    return content;
+    const users = this.parseCSVToJson(content);
+    return users;
   }
 
   static async getFileContent(filePath) {
@@ -48,6 +49,22 @@ class File {
     return {
       valid: true
     };
+  }
+
+  static parseCSVToJson(csvString) {
+    const lines = csvString.split('\n');
+
+    //Remove the first item and add to the variable
+    const firstLine = lines.shift();
+    const header = lines.split(',');
+    const users = lines.map(line => {
+      const columns = line.split(',');
+      let user = {};
+      for(const index in columns) {
+        user[header[header]] = colunms[index];
+      }
+      console.log(user);
+    })
   }
 }
 
