@@ -1,5 +1,6 @@
 const { readFile } = require('fs/promises');
 const { error } = require('./constants');
+const User = require('./user');
 
 const DEFAULT_OPTIONS = {
   maxLines: 3,
@@ -63,9 +64,11 @@ class File {
       for(const index in columns) {
         user[header[index]] = columns[index];
       }
-      console.log(user);
+      
+      return new User(user);
     })
     return users;
+
   }
 }
 
