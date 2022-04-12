@@ -1,18 +1,16 @@
 const { readFile } = require('fs/promises');
-const { join } = require('path');
-
 const { error } = require('./constants');
 
 const DEFAULT_OPTIONS = {
   maxLines: 3,
-  fields: [ 'id', 'name', 'profession', 'age' ]
+  fields: ['id', 'name', 'profession', 'age']
 };
 
 class File {
   static async csvToJson(filePath) {
     const content = await this.getFileContent(filePath);
 
-    const validation = await this.isValid(content);
+    const validation = this.isValid(content);
 
     if (!validation.valid) {
       throw new Error(validation.error);
@@ -23,13 +21,12 @@ class File {
 
   static async getFileContent(filePath) {
     //Convert file content to brazilian format
-    return ( await readFile(filePath)).toString('utf8');
+    return (await readFile(filePath)).toString('utf8');
   }
 
-  static async isValid(csvString, options = DEFAULT_OPTIONS) {
-    const headerPattern = options.fields.join(',');
+  static isValid(csvString, options = DEFAULT_OPTIONS) {
     const [header, ...fileWithoutHeader] = csvString.split('\n');
-    
+    const headerPattern = options.fields.join(',');
     const isHeaderValid = header === headerPattern;
     if(!isHeaderValid) {
       return {
@@ -39,8 +36,8 @@ class File {
     }
 
     const isContentLengthAccepted = (
-      fileWithoutHeader.lenght > 0 &&
-      fileWithoutHeader.lenght <= options.maxLines 
+      fileWithoutHeader.length > 0 &&
+      fileWithoutHeader.length <= options.maxLines 
     );
     if(!isContentLengthAccepted) {
       return {
