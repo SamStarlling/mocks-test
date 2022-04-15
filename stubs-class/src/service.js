@@ -15,3 +15,5 @@ class Service {
   const service = await new Service().makeRequest('https://swapi.dev/api/planets/1/');
   console.log('response', service);
 })()
+
+module.exports = Service;
