@@ -6,6 +6,5 @@ const BASE_URL_2 = 'https://swapi.dev/api/planets/2/';
     const service = new Service();
     const withoutStub = await service.makeRequest(BASE_URL_2);
     console.log(JSON.stringify(withoutStub));
-    // console.log(withoutStub);
   }
 })()
